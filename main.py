@@ -12,13 +12,23 @@ def list_serial_ports():
     return [port.device for port in serial.tools.list_ports.comports()]
 
 
-def choose_option(label, options):
+def choose_option(label, options, default_value=None):
     console.print(f"\n[bold]{label}[/bold]")
+
+    default_index = None
     for idx, option in enumerate(options, 1):
-        console.print(f"  [cyan]{idx}[/cyan]) {option}")
+        prefix = f"[cyan]{idx}[/cyan])"
+        if option == default_value:
+            prefix += " [green](default)[/green]"
+            default_index = idx
+        console.print(f"  {prefix} {option}")
+
+    prompt_label = f"Enter number (1-{len(options)})"
+    if default_index:
+        prompt_label += f" [default: {default_index}]"
 
     while True:
-        choice = Prompt.ask(f"Enter number (1-{len(options)})", default="1")
+        choice = Prompt.ask(prompt_label, default=str(default_index or 1))
         if choice.isdigit():
             idx = int(choice)
             if 1 <= idx <= len(options):
@@ -35,15 +45,17 @@ def main():
         console.print("[red]No serial ports found.[/red]")
         sys.exit(1)
 
-    # Most commonly used baud rates
     baud_rates = [
         "300", "1200", "2400", "4800",
         "9600", "14400", "19200", "38400",
         "57600", "115200", "230400", "460800"
     ]
 
-    port = choose_option("Select Serial Port", ports)
-    baud = choose_option("Select Baud Rate", baud_rates)
+    default_port = ports[-1]  # Last port
+    default_baud = "115200"
+
+    port = choose_option("Select Serial Port", ports, default_value=default_port)
+    baud = choose_option("Select Baud Rate", baud_rates, default_value=default_baud)
 
     console.print(
         Panel(
