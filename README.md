@@ -1,11 +1,11 @@
-# Serial console automation for iTerm2
+# Serial console with iTerm2
 
-There is no free decent serial app for MacOS, but we do have `screen`, so why not automate a bit using with with iTerm2?
-
+There is no free decent serial app for MacOS, but we do have `screen`, so why not automate a bit using it with iTerm2?
+You could log in manually into the serial console, but it's tedious to look up the name of the serial device every time you connect to it. This script will automate this for you and will start the serial console in iTerm.
 
 ### Requirements
 
-We are going to use Python. Clone the repo to your home directory:
+We are going to use Python. Clone the repository to your home directory:
 
 ``` git clone git@github.com:varna9000/serial-iterm2.git ```
 
